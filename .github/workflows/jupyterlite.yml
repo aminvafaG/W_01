@@ -24,23 +24,40 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'   # stable with jupyterlite 0.4.x
+          python-version: '3.10'   # stable for jupyterlite 0.4.x
 
-      - name: Install JupyterLite + deps
+      # --- Python deps for BOTH JupyterLite build and nbconvert execution ---
+      - name: Install build/execution dependencies
         run: |
           pip install \
             "jupyterlite==0.4.*" \
             "jupyterlite-core==0.4.*" \
             "jupyterlite-pyodide-kernel==0.4.*" \
             "jupyter_server>=2,<3" \
-            "jupyterlab_widgets==3.*"
+            "jupyterlab_widgets==3.*" \
+            nbconvert \
+            numpy pandas matplotlib ipywidgets
 
-      - name: Clean previous build
+      # --- Clean + build the JupyterLite site (reads jupyter_lite_config.json) ---
+      - name: Clean previous JupyterLite build
         run: jupyter lite clean
 
-      - name: Build site (reads jupyter_lite_config.json)
+      - name: Build JupyterLite site
         run: jupyter lite build --contents content --output-dir _output
 
+      # --- Pre-execute App.ipynb to static HTML (no clicks required) ---
+      # This creates _output/app.html which you can share directly.
+      - name: Pre-execute App.ipynb to static HTML
+        if: ${{ always() }}   # run even if the lite build succeeded/failed; adjust if you want
+        run: |
+          jupyter nbconvert \
+            --to html \
+            --execute content/App.ipynb \
+            --output app.html \
+            --output-dir _output \
+            --ExecutePreprocessor.timeout=900
+
+      # --- Publish to GitHub Pages ---
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
