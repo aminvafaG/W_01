@@ -8,4 +8,4 @@ dependencies:
   - numpy
   - pandas
   - matplotlib
-  # Add only pure-Python (noarch) or emscripten-forge packages here
+  # Add only pure-Python (noarch) or emscripten-forge packages

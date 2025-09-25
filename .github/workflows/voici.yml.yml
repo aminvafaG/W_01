@@ -21,19 +21,28 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup micromamba
-        uses: mamba-org/setup-micromamba@v1
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
-          micromamba-version: "latest"
-          environment-file: environment.yml
-          cache-environment: true
-          cache-downloads: true
+          python-version: "3.11"
+
+      - name: Install build tools
+        run: |
+          python -m pip install --upgrade pip
+          # Voici (builder) + JupyterLite Xeus (WASM Python runtime)
+          python -m pip install "voici>=0.7" "jupyterlite-xeus>=0.14"
+
+      # OPTIONAL: show the environment.yml we will use
+      - name: Show environment.yml
+        run: cat environment.yml
 
       - name: Build Voici site
-        shell: bash -l {0}
         run: |
-          # Build static dashboard site into _site
+          # Build static dashboard pages into _site
           voici build --contents content --output-dir _site
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
