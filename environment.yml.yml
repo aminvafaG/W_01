@@ -1,11 +1,55 @@
-name: voici
-channels:
-  - https://repo.mamba.pm/emscripten-forge
-  - conda-forge
-dependencies:
-  - xeus-python
-  - ipywidgets
-  - numpy
-  - pandas
-  - matplotlib
-  # Add only pure-Python (noarch) or emscripten-forge packages
+name: Build & Deploy (Voici)
+
+on:
+  push:
+    branches: [ main ]   # ← change if your default branch isn’t 'main'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install build tools
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "voici>=0.7" "jupyterlite-xeus>=0.14"
+
+      - name: Build Voici site
+        run: |
+          # builds static dashboard pages into _site
+          voici build --contents content --output-dir _site
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    environment:
+      name: github-pages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
