@@ -18,7 +18,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - run: pip install jupyterlite==0.4.* jupyterlite-core jupyterlite-pyodide-kernel
+      - run: pip install "jupyterlite==0.4.*" "jupyterlite-core==0.4.*" "jupyterlite-pyodide-kernel==0.4.*" "jupyter_server>=2,<3"
       - run: jupyter lite build --contents content --output-dir _output
       - uses: actions/upload-pages-artifact@v3
         with:
