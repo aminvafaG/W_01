@@ -23,10 +23,10 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install build deps (lean)
+      - name: Install build deps (JupyterLab + JupyterLite, no xeus)
         run: |
           python -m pip install --upgrade pip
-          pip install "voici==0.7.1"
+          pip install             "voici==0.7.1"             "jupyterlab>=4.2,<5"             "jupyterlite==0.4.5"             "jupyterlite-core==0.4.5"
 
       - name: Build static site with Voici
         run: |

@@ -1,33 +1,21 @@
-# JupyterLite + Voici (Dashboard‑Only) Starter
+# W_01 — JupyterLite + Voici (Dashboard-Only)
 
-This repo is set up to publish a **dashboard‑only** page at:
-
+Open your dashboard after deployment at:
 ```
 https://<your-username>.github.io/<your-repo>/voici/render/App.ipynb
 ```
-
-## How it works
-
-- Put your notebook(s) in `content/`. The main one should be named **`App.ipynb`**.
-- Put your data files under `files/` (for example, `files/data/data.csv`).
-  - Read them at runtime from Python via paths like `/files/data/data.csv`.
-- The GitHub Action in `.github/workflows/voici.yml` builds the static site with **Voici** and deploys it to GitHub Pages.
-- **Only the output UI** is shown (code is hidden), like Voilà.
-
-## Quick start
-
-1. Replace `content/App.ipynb` with your real dashboard notebook (keep the same name).
-2. Add your dataset (e.g., `data.csv`) to `files/data/`.
-3. Commit to `main` and push.
-4. In your repo settings, enable **Pages** → **Source: GitHub Actions**.
-5. After the action runs, open:
-
+For this repo it should be:
 ```
-https://<your-username>.github.io/<your-repo>/voici/render/App.ipynb
+https://aminvafag.github.io/W_01/voici/render/App.ipynb
 ```
 
-## Notes
+## How to use
+- Your app notebook lives at `content/App.ipynb`. Replace it with your own if needed (keep the name).
+- Data files for in-browser access go under `files/` (e.g., `files/data/data.csv`).
+  - Read in Python with paths like: `/files/data/data.csv`.
+- GitHub Action in `.github/workflows/voici.yml` builds and deploys to GitHub Pages.
 
-- If your notebook needs Python packages not bundled with Pyodide, use `piplite`/`micropip` inside the notebook to install web‑friendly wheels at runtime.
-- Large files: keep data compact or consider pre‑aggregating.
-- If you want a landing page redirecting to the app, keep `index.html` at the repo root.
+## Deploy
+1. Commit & push all files to the `main` branch.
+2. In GitHub → **Settings** → **Pages** → set **Source** to **GitHub Actions**.
+3. After the workflow completes, visit the URLs above.
