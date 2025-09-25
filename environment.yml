@@ -1,0 +1,14 @@
+name: xeus-python-kernel
+channels:
+  - https://repo.prefix.dev/emscripten-forge
+  - conda-forge
+dependencies:
+  - xeus-python
+  - numpy
+  - pandas
+  - matplotlib
+  - ipywidgets
+  - pip
+  - pip:
+      # plotly works client-side (optional; remove if unused)
+      - plotly

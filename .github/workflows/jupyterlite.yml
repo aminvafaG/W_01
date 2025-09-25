@@ -1,4 +1,4 @@
-name: Build JupyterLite site
+name: Build and Deploy JupyterLite + Voici
 
 on:
   push:
@@ -15,36 +15,34 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      # Build the JupyterLite site (Lab + Notebook + Voici)
+      - name: Build JupyterLite site
+        uses: jupyterlite/action@v1
         with:
-          python-version: '3.10'   # stable with jupyterlite 0.4.x
+          # Build all frontends, including the Voici app
+          apps: lab,notebook,voici
+          # Where your content lives
+          contents: content
+          # Include extra files if any (leave default)
+          output_dir: _output
 
-      - name: Install JupyterLite + deps
-        run: |
-          pip install \
-            "jupyterlite==0.4.*" \
-            "jupyterlite-core==0.4.*" \
-            "jupyterlite-pyodide-kernel==0.4.*" \
-            "jupyter_server>=2,<3" \
-            "jupyterlab_widgets==3.*"
-
-      - name: Clean previous build
-        run: jupyter lite clean
-
-      - name: Build site (reads jupyter_lite_config.json)
-        run: jupyter lite build --contents content --output-dir _output
-
-      - name: Upload Pages artifact
+      - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: _output
 
-      - name: Deploy to GitHub Pages
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
         uses: actions/deploy-pages@v4
