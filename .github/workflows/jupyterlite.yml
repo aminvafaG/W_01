@@ -1,3 +1,4 @@
+
 name: Build JupyterLite site
 
 on:
@@ -24,41 +25,30 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'   # stable for jupyterlite 0.4.x
+          python-version: '3.10'   # stable with jupyterlite 0.4.x
 
-      # Install everything needed to:
-      #  - build the JupyterLite site
-      #  - execute App.ipynb server-side to static HTML (no-click link)
-      - name: Install build/execution dependencies
+      - name: Install JupyterLite + deps
         run: |
           pip install \
             "jupyterlite==0.4.*" \
             "jupyterlite-core==0.4.*" \
             "jupyterlite-pyodide-kernel==0.4.*" \
             "jupyter_server>=2,<3" \
-            "jupyterlab_widgets==3.*" \
-            nbconvert ipykernel \
-            numpy pandas matplotlib ipywidgets
+            "jupyterlab_widgets==3.*"
 
-          # Register a python3 kernel so nbconvert can execute the notebook
-          python -m ipykernel install --user --name=python3
-
-      - name: Clean previous JupyterLite build
+      - name: Clean previous build
         run: jupyter lite clean
 
-      - name: Build JupyterLite site (reads jupyter_lite_config.json)
+      - name: Build site (reads jupyter_lite_config.json)
         run: jupyter lite build --contents content --output-dir _output
 
-      # Pre-execute App.ipynb to static HTML so you have a zero-click link
-      - name: Pre-execute App.ipynb to static HTML
+
+      - name: Pre-execute App to static HTML
         run: |
-          jupyter nbconvert \
-            --to html \
-            --execute content/App.ipynb \
-            --ExecutePreprocessor.kernel_name=python3 \
-            --ExecutePreprocessor.timeout=900 \
-            --output app.html \
-            --output-dir _output
+        pip install nbconvert
+        jupyter nbconvert --to html --execute content/App.ipynb --output app.html --output-dir _output
+
+
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
