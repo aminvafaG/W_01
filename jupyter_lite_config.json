@@ -1,0 +1,10 @@
+{
+  "LiteBuildConfig": {
+    "outputDir": "_output"
+  },
+  "litePluginSettings": {
+    "@jupyterlite/pyodide-kernel-extension:settings": {
+      "pyodideUrl": "https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"
+    }
+  }
+}
