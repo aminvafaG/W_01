@@ -24,7 +24,7 @@ jobs:
       - name: Set up micromamba
         uses: mamba-org/setup-micromamba@v1
         with:
-          micromamba-version: "1.5.8"
+          micromamba-version: latest        # ← change this line
           environment-file: environment.yml
           cache-environment: true
 
