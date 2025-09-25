@@ -26,7 +26,9 @@ jobs:
         with:
           python-version: '3.10'   # stable for jupyterlite 0.4.x
 
-      # --- Python deps for BOTH JupyterLite build and nbconvert execution ---
+      # Install everything needed to:
+      #  - build the JupyterLite site
+      #  - execute App.ipynb server-side to static HTML (no-click link)
       - name: Install build/execution dependencies
         run: |
           pip install \
@@ -35,29 +37,29 @@ jobs:
             "jupyterlite-pyodide-kernel==0.4.*" \
             "jupyter_server>=2,<3" \
             "jupyterlab_widgets==3.*" \
-            nbconvert \
+            nbconvert ipykernel \
             numpy pandas matplotlib ipywidgets
 
-      # --- Clean + build the JupyterLite site (reads jupyter_lite_config.json) ---
+          # Register a python3 kernel so nbconvert can execute the notebook
+          python -m ipykernel install --user --name=python3
+
       - name: Clean previous JupyterLite build
         run: jupyter lite clean
 
-      - name: Build JupyterLite site
+      - name: Build JupyterLite site (reads jupyter_lite_config.json)
         run: jupyter lite build --contents content --output-dir _output
 
-      # --- Pre-execute App.ipynb to static HTML (no clicks required) ---
-      # This creates _output/app.html which you can share directly.
+      # Pre-execute App.ipynb to static HTML so you have a zero-click link
       - name: Pre-execute App.ipynb to static HTML
-        if: ${{ always() }}   # run even if the lite build succeeded/failed; adjust if you want
         run: |
           jupyter nbconvert \
             --to html \
             --execute content/App.ipynb \
+            --ExecutePreprocessor.kernel_name=python3 \
+            --ExecutePreprocessor.timeout=900 \
             --output app.html \
-            --output-dir _output \
-            --ExecutePreprocessor.timeout=900
+            --output-dir _output
 
-      # --- Publish to GitHub Pages ---
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
