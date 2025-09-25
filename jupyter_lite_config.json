@@ -10,7 +10,6 @@
     }
   },
   "federated_extensions": [
-    "@jupyter-widgets/jupyterlab-manager@5.0.10",
-    "@voila-dashboards/voila-lite@0.6.2"
+    "@jupyter-widgets/jupyterlab-manager@5.0.10"
   ]
 }
