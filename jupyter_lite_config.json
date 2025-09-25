@@ -1,6 +1,7 @@
 {
   "LiteBuildConfig": {
-    "outputDir": "_output"
+    "outputDir": "_output",
+    "apps": ["lab", "voila", "tree"]
   },
   "litePluginSettings": {
     "@jupyterlite/pyodide-kernel-extension:settings": {
