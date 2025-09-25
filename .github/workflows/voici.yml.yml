@@ -18,13 +18,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Set up micromamba
         uses: mamba-org/setup-micromamba@v1
         with:
-          micromamba-version: latest            # ← key change
+          micromamba-version: latest
           environment-file: environment.yml
           cache-environment: true
 
@@ -37,7 +36,7 @@ jobs:
       - name: Build dashboards with Voici
         shell: bash -l {0}
         run: |
-          voici build --contents content --output-dir _output
+          voici build --contents content --output-dir _output --base-url /W_01/
 
       - name: Upload artifact to Pages
         uses: actions/upload-pages-artifact@v3
@@ -51,6 +50,5 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
+      - id: deployment
         uses: actions/deploy-pages@v4
