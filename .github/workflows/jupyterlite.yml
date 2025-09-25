@@ -1,4 +1,3 @@
-
 name: Build JupyterLite site
 
 on:
@@ -41,14 +40,6 @@ jobs:
 
       - name: Build site (reads jupyter_lite_config.json)
         run: jupyter lite build --contents content --output-dir _output
-
-
-      - name: Pre-execute App to static HTML
-        run: |
-        pip install nbconvert
-        jupyter nbconvert --to html --execute content/App.ipynb --output app.html --output-dir _output
-
-
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
