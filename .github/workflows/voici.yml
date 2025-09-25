@@ -23,10 +23,11 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install build deps (pinned for compatibility)
+      - name: Install build deps (pinned, existing, compatible)
         run: |
           python -m pip install --upgrade pip
-          pip install             "voici==0.7.1"             "jupyterlite==0.4.5"             "jupyterlite-core==0.4.5"             "jupyterlite-xeus-python==0.15.1"
+          # Pin jupyterlite and core below 0.5; use xeus-python kernel 0.9.0 (exists on PyPI)
+          pip install             "voici==0.7.1"             "jupyterlite<0.5"             "jupyterlite-core<0.5"             "jupyterlite-xeus-python==0.9.0"
 
       - name: Build static site with Voici
         run: |
