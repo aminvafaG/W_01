@@ -20,9 +20,9 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'   # (stable with jupyterlite 0.4)
+          python-version: '3.10'    # good with jupyterlite 0.4.x
 
-      - name: Install JupyterLite + server + widgets
+      - name: Install JupyterLite + server + widgets meta
         run: |
           pip install \
             "jupyterlite==0.4.*" \
@@ -34,8 +34,8 @@ jobs:
       - name: Clean previous build
         run: jupyter lite clean
 
-      - name: Build site (bundle ipywidgets manager)
-        run: jupyter lite build --contents content --output-dir _output --federated-extensions '@jupyter-widgets/jupyterlab-manager@5.0.10'
+      - name: Build site
+        run: jupyter lite build --contents content --output-dir _output
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

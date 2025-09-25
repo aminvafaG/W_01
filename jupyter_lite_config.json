@@ -6,5 +6,8 @@
     "@jupyterlite/pyodide-kernel-extension:settings": {
       "pyodideUrl": "https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"
     }
-  }
+  },
+  "federated_extensions": [
+    "@jupyter-widgets/jupyterlab-manager@5.0.10"
+  ]
 }
