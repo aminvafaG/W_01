@@ -1,14 +1,16 @@
 
-
 {
-  "$schema": "https://jupyterlite.readthedocs.io/en/stable/_static/schemas/v0.1.0.json",
-  "jupyterlite": { "lab": false },
-  "pyodide": {
-    "packages": ["numpy", "pandas", "matplotlib", "ipywidgets", "ipympl"]
+  "LiteBuildConfig": {
+    "outputDir": "_output",
+    "apps": ["lab", "voila", "tree"]
+  },
+  "litePluginSettings": {
+    "@jupyterlite/pyodide-kernel-extension:settings": {
+      "pyodideUrl": "https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"
+    }
   },
   "federated_extensions": [
-    "@jupyter-widgets/jupyterlab-manager",
-    "jupyter-matplotlib"
+    "@jupyter-widgets/jupyterlab-manager@5.0.10",
+    "@voila-dashboards/voila-lite@0.6.2"
   ]
 }
-
