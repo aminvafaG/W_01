@@ -2,8 +2,7 @@
   "jupyter-lite": true,
   "LiteBuildConfig": {
     "disable_addons": [
-      "@jupyterlite/piplite",
-      "@jupyterlite/pyodide-kernel-extension"
+      "@jupyterlite/piplite"
     ]
   }
 }
