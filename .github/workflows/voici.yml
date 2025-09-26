@@ -1,4 +1,4 @@
-name: Build & Deploy (Voici + JupyterLite)
+name: Build & Deploy (Voici)
 
 on:
   push:
@@ -28,25 +28,16 @@ jobs:
           environment-file: environment.yml
           cache-environment: true
 
-      - name: Install build CLIs (Voici + JupyterLite)
+      - name: Install voici CLI
         shell: bash -l {0}
         run: |
           python -m pip install -U pip
           python -m pip install voici
-          python -m pip install "jupyterlite[lab]" jupyterlite-pyodide-kernel libarchive-c
 
       - name: Build dashboards with Voici
         shell: bash -l {0}
         run: |
-          voici build --contents content --output-dir _output --base-url /W_01/ --overwrite
-
-      - name: Build JupyterLite Lab site (temp -> lab/)
-        shell: bash -l {0}
-        run: |
-          rm -rf _output_lite _output/lab
-          jupyter lite build --contents content --output-dir _output_lite --base-url /W_01/lab/
-          mkdir -p _output/lab
-          cp -r _output_lite/* _output/lab/
+          voici build --contents content --output-dir _output --base-url /W_01/
 
       - name: Upload artifact to Pages
         uses: actions/upload-pages-artifact@v3
