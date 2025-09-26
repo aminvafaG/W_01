@@ -20,22 +20,44 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # 0) Micromamba is REQUIRED for jupyterlite-xeus (fixes your "micromamba is needed" error)
+      - name: Set up micromamba
+        uses: mamba-org/setup-micromamba@v1
+        with:
+          micromamba-version: "latest"
+
+      # 1) Python toolchain
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
+      # 2) Install matched builder versions (pin to avoid addon mismatch / exit code 3)
       - name: Install builders
         run: |
           python -m pip install -U pip
-          pip install -U jupyterlite jupyterlite-xeus voici
+          pip install \
+            "jupyterlite==0.6.4" \
+            "jupyterlite-xeus==0.11.1" \
+            "voici==0.7.4" \
+            jupyterlab_pygments
 
-      # 1) Build JupyterLite (publishes /lab, /retro, /tree)
+          # sanity: print versions into the log
+          python -c "import jupyterlite; print('jupyterlite', jupyterlite.__version__)"
+          python -c "import jupyterlab_pygments, pkgutil; print('jupyterlab_pygments OK')"
+
+      # 3) Build JupyterLite (Lab/Tree) with xeus-python kernel
       - name: Build JupyterLite
+        env:
+          # ensure micromamba is on PATH for jupyterlite-xeus
+          MAMBA_ROOT_PREFIX: ${{ runner.temp }}/mamba
         run: |
-          jupyter lite build --contents content --output-dir _output
+          jupyter lite build \
+            --contents content \
+            --output-dir _output \
+            --XeusPythonEnv.packages "['numpy','pandas','matplotlib','ipywidgets']"
 
-      # 2) Build Voici (publishes /voici with /tree and /render)
+      # 4) Build Voici (dashboard renderer)
       - name: Build Voici
         run: |
           voici build --contents content --output-dir _output/voici
