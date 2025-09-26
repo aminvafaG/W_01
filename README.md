@@ -1,33 +1,15 @@
-# JupyterLite + Voici (single GitHub Pages site)
+# W_01 — Voici Dashboard (GitHub Pages)
 
-This repo builds a **single static site** that contains both:
-- **JupyterLite Lab** (full JupyterLab UI), and
-- **Voici** (static dashboard rendering of your notebooks).
+This repo publishes a **code-free dashboard** with [Voici](https://voici.org) to GitHub Pages.
 
-## How to use
+- Notebook: `content/App.ipynb`
+- Live page: `/App.html` (built by the workflow)
+- Data files: put under `content/data/`:
+  - `meta.csv`
+  - `tuning_curves.npz`
+  - `psth.npz`
 
-1. Push this repo to GitHub (or create one from it).
-2. In GitHub → *Settings* → *Pages*, set **Source** to *GitHub Actions*.
-3. Push to `main`. The included workflow will build and deploy to Pages.
+If the real data files are missing, the app generates small **demo** data so the page still works.
 
-When deployed under `https://<USER>.github.io/<REPO>/`, your main links are:
-
-- JupyterLab (opens the notebook):  
-  `https://<USER>.github.io/<REPO>/lab/index.html?path=App.ipynb`
-
-- Voici (renders the notebook as an app):  
-  `https://<USER>.github.io/<REPO>/voici/render/App.html`
-
-> Tip: Replace `App.ipynb` with your own notebooks (add them to the `content/` folder).
-
-## Add packages
-Packages are pre-installed at build-time using `environment.yml` (via `emscripten-forge` and `conda-forge`).  
-Add packages there (only `noarch` or `emscripten-forge` packages are supported in the browser).
-
-## Local build (optional)
-```bash
-python -m pip install -r requirements-build.txt
-jupyter lite build --contents content --output-dir _site --apps lab --apps voici
-python -m http.server 8000 --directory _site
-# then open http://localhost:8000
-```
+## Local dev
+You generally don't need to run locally; GitHub Actions builds the static site.

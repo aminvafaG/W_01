@@ -1,3 +1,0 @@
-jupyterlite-core>=0.6
-jupyterlite-xeus>=0.13
-voici>=0.9
