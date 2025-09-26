@@ -33,15 +33,13 @@ jobs:
         run: |
           python -m pip install -U pip
           python -m pip install voici
-          # lite + kernels; libarchive-c silences the warning and speeds archives
           python -m pip install "jupyterlite[lab]" jupyterlite-pyodide-kernel libarchive-c
 
       - name: Build dashboards with Voici
         shell: bash -l {0}
         run: |
-          voici build --contents content --output-dir _output --base-url /W_01/
+          voici build --contents content --output-dir _output --base-url /W_01/ --overwrite
 
-      # Workaround JupyterLite nested _output bug: build to temp, then copy into _output/lab
       - name: Build JupyterLite Lab site (temp -> lab/)
         shell: bash -l {0}
         run: |

@@ -1,6 +1,8 @@
 {
   "jupyterLite": true,
   "LiteBuildConfig": {
-    "disable_addons": ["@jupyterlite/piplite"]
+    "disable_addons": [
+      "@jupyterlite/piplite"
+    ]
   }
 }

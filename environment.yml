@@ -8,4 +8,6 @@ dependencies:
   - numpy
   - pandas
   - matplotlib
-  - plotly
+  - pip
+  - pip:
+      - voici
