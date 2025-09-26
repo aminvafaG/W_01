@@ -1,8 +1,8 @@
 {
-  "jupyterLite": true,
   "LiteBuildConfig": {
-    "disabledExtensions": [
-      "@jupyterlite/piplite"
-    ]
+    "contents": [
+      "content"
+    ],
+    "output_dir": "_site"
   }
 }
